@@ -1,10 +1,14 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-2">
         <div class="row">
             <div class="col-sm-12 col-md-5 col-lg-5 bg-white">
                 <div class="p-3">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Post ဖန်တီးခြင်းအောင်မြင်ပါသည်။</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <form action="{{ route('post#create')}}" method="POST">
                         @csrf
                         <div class="group-text">
@@ -30,7 +34,9 @@
                 {{-- <p>{{substr( $p['description'],0,1000)}}</p>  pure php --}}
                 <p>{{ Str::words($p['description'],10,'...')}}</p>
                 <div class="text-end">
-                    <button class="btn btn-sm btn-primary" title="see more"><i class="fa-solid fa-circle-info me-2"></i>အပြည့်စုံဖတ်ရန်</button>
+                    <a href="{{ route('post#read',$p['id'])}}">
+                        <button class="btn btn-sm btn-primary" title="see more"><i class="fa-solid fa-circle-info me-2"></i>အပြည့်စုံဖတ်ရန်</button>
+                    </a>
                     <a href="{{ route('postDelete',$p['id'])}}">
                         <button class="btn btn-sm btn-danger" title="delete"><i class="fa-solid fa-trash me-2"></i>ဖျတ်ရန်</button>
                     </a>
