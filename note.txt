@@ -1,0 +1,5 @@
+customize string count
+Laravel => Str::words($p['title'],20,'...');
+Pure PHP => Substr($p['title'],0,20);
+
+string ဆက်ချင် url('delete'.$item['title']) | route('delete',$item['title'])
