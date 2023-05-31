@@ -2,13 +2,24 @@
 
 @section('content')
     <div class="container mt-2">
+        <button class="btn btn-sm btn-secondary col-1 offset-8">Total Posts : {{ $posts->total() }}</button>
         <div class="row">
             <div class="col-sm-12 col-md-5 col-lg-5 bg-white">
                 <div class="p-3">
+                    @if (session('insertSuccess'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Post ဖန်တီးခြင်းအောင်မြင်ပါသည်။</strong>
+                        <strong>{{session('insertSuccess')}}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                    @endif
+
+                    @if (session('updateSuccess'))
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <strong>{{ session('updateSuccess')}}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <form action="{{ route('post#create')}}" method="POST">
                         @csrf
                         <div class="group-text">
@@ -44,6 +55,9 @@
             </div>
             @endforeach
 
+            <div class="mt-3">
+                {{ $posts->links() }}
+            </div>
             </div>
         </div>
     </div>

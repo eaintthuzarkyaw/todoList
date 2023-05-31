@@ -4,7 +4,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [PostController::class, 'create'])->name('post#home');
+Route::redirect('/', 'customer/createPage')->name('post#home');
 Route::get('customer/createPage', [PostController::class, 'createPage'])->name('post#createPage');
 Route::post('post/create', [PostController::class, 'postCreate'])->name('post#create');
 

@@ -3,3 +3,34 @@ Laravel => Str::words($p['title'],20,'...');
 Pure PHP => Substr($p['title'],0,20);
 
 string ဆက်ချင် url('delete'.$item['title']) | route('delete',$item['title'])
+
+tempoary session message
+-------------------------
+
+( after button click function)
+
+return back()->with([$data,'insert' => "success.."]);
+
+@if (session('insertSuccess'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+ **       <strong>{{session('insertSuccess')}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+
+For Pagination
+------------------
+*** object format ( not array format ) ***
+
+$posts = Post::orderBy('created_at', 'desc')->paginate(3);
+
+{{ $posts->links() }}
+
+for ui => provider->app service provider
+
+public function boot(): void
+    {
+        // for Pagination ui | import Pagination/Paginator
+        Paginator::useBootstrapFive();
+    }
