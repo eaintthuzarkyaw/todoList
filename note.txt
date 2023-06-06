@@ -4,8 +4,8 @@ Pure PHP => Substr($p['title'],0,20);
 
 string ဆက်ချင် url('delete'.$item['title']) | route('delete',$item['title'])
 
-tempoary session message
--------------------------
+( tempoary session message )
+-----------------------------
 
 ( after button click function)
 
@@ -19,7 +19,7 @@ return back()->with([$data,'insert' => "success.."]);
 @endif
 
 
-For Pagination
+( For Pagination )
 ------------------
 *** object format ( not array format ) ***
 
@@ -34,3 +34,54 @@ public function boot(): void
         // for Pagination ui | import Pagination/Paginator
         Paginator::useBootstrapFive();
     }
+
+
+( Validation Rules )
+---------------------
+$Validation_rules = [
+    'postTitle' => 'required',
+    'postDescription' => 'required',
+];
+
+Validator::make($request->all(),$Validation_rules)->validate();
+
+
+( error ထုတ်ပြချင်ရင် )
+---------------------
+
+class="form-control @error('title') is-invalid @enderror"
+
+@error('title')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+@enderror
+
+
+( dataအဟောင်းကိုပြန်ရချင် value = "{{ old('postTitle') }}" )
+( update လုပ်တဲ့ချိန် old data ပြန်ရချင် value = "{{ old('title', $post['title']) }}")
+                                ရှေ့က update data ,နောက်က database ထဲက data
+
+
+( unique => data ထပ်လို့ရင် error တတ်တာ )
+-----------------------------------------
+
+( unique:table_name,unique ဖြစ်ချင်တဲ့ column name )
+
+$validation_rules = [
+            'title' => 'required|min:5|max:100|unique:posts,title',
+            'description' => 'required',
+        ];
+
+Validator::make($request->all(), $validation_rules)->validate();
+
+
+( customize validation message )
+---------------------------------
+(title field မှာ required ဆိုတဲ့ error တတ်ခဲ့ရင် message ထုတ်ပြမယ် )
+
+$validation_message = [
+            'title.required' => 'Post Title ဖြည့်ရန်လိုအပ်ပါသည်။',
+            'description.required' => 'Post Description ဖြည့်ရန်လိုအပ်ပါသည်။',
+        ];
+Validator::make($request->all(), $validation_rules,$validation_message)->validate();

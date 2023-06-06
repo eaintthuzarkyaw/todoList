@@ -15,11 +15,29 @@
 
                     <div class="mb-3">
                         <label class="pb-2">Title</label>
-                        <input type="text" name="title" class="form-control" value="{{ $post['title']}}" required>
+                        <input type="text" name="title"
+                        class="form-control @error('title')
+                            is-invalid
+                        @enderror"
+                         value="{{ old('title',$post['title']) }}">
+                         @error('title')
+                         <div class="invalid-feedback">
+                            {{ $message }}
+                         </div>
+                         @enderror
                     </div>
                     <div class="mb-2">
                         <label class="pb-2">Description</label>
-                        <textarea name="description" id="" cols="30" rows="10" class="form-control" required>{{ $post['description']}}</textarea>
+                        <textarea name="description" id="" cols="30" rows="10"
+                        class="form-control @error('description')
+                            is-invalid
+                        @enderror"
+                        >{{ old('desciption',$post['description']) }}</textarea>
+                        @error('description')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>

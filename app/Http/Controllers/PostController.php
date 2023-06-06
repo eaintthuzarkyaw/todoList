@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -19,9 +20,10 @@ class PostController extends Controller
     // post create
     public function postCreate(Request $request)
     {
+        $this->validation_check($request);
         $data = $this->getPostData($request);
         Post::create($data);
-        return back()->with([$data, 'insertSuccess' => "post ဖန်တီးခြင်းအောင်မြင်ပါသည်။"]);
+        return back()->with([$data, 'insertSuccess' => "ပို့စ်ဖန်တီးခြင်းအောင်မြင်ပါသည်။"]);
     }
 
     // post delete
@@ -55,10 +57,11 @@ class PostController extends Controller
     // get edit data
     public function update(Request $request, $id)
     {
+        $this->validation_check($request);
         $editData = $this->getEditData($request);
         Post::where('id', $id)->update($editData);
         // dd($editData);
-        return redirect()->route('post#home')->with(['updateSuccess' => 'Post အဆင့်မြှင့်တင်ခြင်းအောင်မြင်ပါသည်။']);
+        return redirect()->route('post#home')->with(['updateSuccess' => 'ပို့စ်အဆင့်မြှင့်တင်ခြင်းအောင်မြင်ပါသည်။']);
     }
 
 
@@ -80,5 +83,23 @@ class PostController extends Controller
             'description' => $request->description,
         ];
         return $response;
+    }
+
+    // validation check
+    private function validation_check($request)
+    {
+        $validation_rules = [
+            'title' => 'required|min:5|max:100|unique:posts,title',
+            'description' => 'required',
+        ];
+
+        $validation_message = [
+            'title.required' => 'ခေါင်းစဉ်ဖြည့်သွင်းရန်လိုအပ်ပါသည် ။',
+            'title.min' => 'စာလုံးအရေအတွက် ၅ လုံးနှင့်အထက်ဖြစ်ရပါမည် ။',
+            'title.unique' => 'ခေါင်းစဉ်တူနေပါသည်။ ထပ်မံဖြည့်သွင်းပါ ။',
+            'description.required' => 'အကြောင်းအရာဖြည့်သွင်းရန်လိုအပ်ပါသည်။',
+        ];
+
+        Validator::make($request->all(), $validation_rules, $validation_message)->validate();
     }
 }

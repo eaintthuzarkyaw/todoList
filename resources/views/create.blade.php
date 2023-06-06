@@ -2,16 +2,31 @@
 
 @section('content')
     <div class="container mt-2">
-        <button class="btn btn-sm btn-secondary col-1 offset-8">Total Posts : {{ $posts->total() }}</button>
         <div class="row">
+            <div class="col-2 offset-5">
+                <button class="btn btn-sm btn-outline-primary">စုစုပေါင်းအရေအတွက် : {{ $posts->total() }}</button>
+            </div>
+        </div>
+
+        <div class="row mt-2">
             <div class="col-sm-12 col-md-5 col-lg-5 bg-white">
                 <div class="p-3">
                     @if (session('insertSuccess'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
                         <strong>{{session('insertSuccess')}}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @endif
+
+                    {{-- @if ($errors->any())
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <ul>
+                                    <li>{{ $error }}</li>
+                                </ul>
+                            @endforeach
+                        </div>
+                    @endif --}}
 
                     @if (session('updateSuccess'))
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -23,14 +38,32 @@
                     <form action="{{ route('post#create')}}" method="POST">
                         @csrf
                         <div class="group-text">
-                            <label for="" class="pb-1">Post Title</label>
-                            <input type="text" name="title" class="form-control" placeholder="Enter Post Title...">
+                            <label for="" class="pb-1">ခေါင်းစဉ်</label>
+                            <input type="text" value="{{ old('title') }}" name="title"
+                            class="form-control @error('title')
+                                is-invalid
+                            @enderror"
+                            placeholder="ခေါင်းစဉ်ဖြည့်သွင်းပါ ။">
+                            @error('title')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="group-text mb-3 mt-4">
-                            <label for="" class="pb-1">Post Description</label>
-                            <textarea name="description" class="form-control" placeholder="Enter Post Description..." cols="30" rows="10"></textarea>
+                            <label for="" class="pb-1">အကြောင်းအရာ</label>
+                            <textarea name="description" value="{{ old('description')}}"
+                            class="form-control @error('description')
+                                is-invalid
+                            @enderror"
+                            placeholder="အကြောင်းအရာဖြည့်သွင်းပါ ။" cols="30" rows="10"></textarea>
+                            @error('description')
+                                <div class="invalid-feedback">
+                                    {{$message}}
+                                </div>
+                            @enderror
                         </div>
-                        <button type="submit" class="btn btn-sm btn-primary">Create</button>
+                        <button type="submit" class="btn btn-sm btn-primary">ဖန်တီးပါ</button>
                     </form>
                 </div>
             </div>
