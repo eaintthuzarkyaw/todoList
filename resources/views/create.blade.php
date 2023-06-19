@@ -67,16 +67,17 @@
                     </form>
                 </div>
             </div>
+
             <div class="col-md-7 col-lg-7 col-sm-12">
 
             @foreach ($posts as $p)
             <div class="post p-3 shadow-sm">
-               <div class="d-flex justify-content-between">
-                <h5>{{ $p['title']}}</h5>
-                <small class="text-success">{{ date('d-m-Y', strtotime($p['created_at'])) }}</small>
+                <h6 class="text-muted text-end">{{ $p->created_at->format('d/F/Y | n:i:A') }}</h6>
+               <div class="row">
+                <h5 class="col">{{ $p['title']}}</h5>
                </div>
                 {{-- <p>{{substr( $p['description'],0,1000)}}</p>  pure php --}}
-                <p>{{ Str::words($p['description'],10,'...')}}</p>
+                <p>{{ Str::words($p['description'],25,'...')}}</p>
                 <div class="text-end">
                     <a href="{{ route('post#read',$p['id'])}}">
                         <button class="btn btn-sm btn-primary" title="see more"><i class="fa-solid fa-circle-info me-2"></i>အပြည့်စုံဖတ်ရန်</button>

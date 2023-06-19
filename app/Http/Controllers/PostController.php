@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,8 +13,24 @@ class PostController extends Controller
     // home page
     public function createPage()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(3);
-        // dd($posts);
+        // $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+
+        // $posts = Post::select("title")->first();
+        // $posts = Post::pluck("title");
+        // $posts = Post::select("title", "description")->get();
+        // $posts = Post::get()->last();
+        // $posts = Post::where('id', '<', 11)->get()->random();
+        // $posts = Post::orderBy('id', 'asc')->get();
+        // $posts = Post::whereBetween('id', [10, 40])->get();
+        // $posts = Post::whereBetween('id', [10, 20])->orderBy('id', 'desc')->get();
+        // $posts = Post::select('id', 'created_at')
+        //     ->whereBetween('id', [10, 15])
+        //     ->where('created_at', '2023-06-08T03:24:23.000000Z')
+        //     ->orderBy('id', 'asc')
+        //     ->dd();
+        $posts = Post::where('id', '<', 10)->orderBy('description', 'desc')->value('description');
+        dd($posts);
+        // dd($posts->toArray());
         return view('create', compact('posts'));
     }
 
@@ -54,7 +71,7 @@ class PostController extends Controller
         return view('edit', compact('post'));
     }
 
-    // get edit data
+    // get edit data & update
     public function update(Request $request, $id)
     {
         $this->validation_check($request);
@@ -88,8 +105,9 @@ class PostController extends Controller
     // validation check
     private function validation_check($request)
     {
+        // dd($status);
         $validation_rules = [
-            'title' => 'required|min:5|max:100|unique:posts,title',
+            'title' => 'required|min:5|max:100|unique:posts,title,' . $request->id,
             'description' => 'required',
         ];
 
